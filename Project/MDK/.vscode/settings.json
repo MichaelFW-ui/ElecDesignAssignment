@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "nixie.h": "c",
+        "stm32f10x.h": "c",
+        "steer.h": "c",
+        "motor.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
+}

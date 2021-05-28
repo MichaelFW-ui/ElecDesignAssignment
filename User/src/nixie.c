@@ -72,7 +72,7 @@ void Nixie_IRQ_Init() {
 }
 
 
-void NIXIE_TIM_IRQHandler() {
+void Nixie_TIM_IRQHandler() {
     if (TIM_GetITStatus(NIXIE_TIM, TIM_IT_Update) != RESET) {
         Nixie_Display(count = (count + 1) % 4);
         TIM_ClearITPendingBit(NIXIE_TIM, TIM_IT_Update);

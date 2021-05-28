@@ -7,7 +7,7 @@
 #define NIXIE_TIM_APBxClkCmd RCC_APB1PeriphClockCmd
 #define NIXIE_TIM_CLK RCC_APB1Periph_TIM6
 #define NIXIE_TIM_IRQ TIM6_IRQn
-#define NIXIE_TIM_IRQHandler TIM6_IRQHandler
+#define Nixie_TIM_IRQHandler TIM6_IRQHandler
 
 #define NIXIE_GPIO_CLK RCC_APB2Periph_GPIOC
 #define NIXIE_GPIO_APBxClkCmd RCC_APB2PeriphClockCmd

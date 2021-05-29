@@ -4,7 +4,8 @@
         "stm32f10x.h": "c",
         "steer.h": "c",
         "motor.h": "c",
-        "remote.h": "c"
+        "remote.h": "c",
+        "debug.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

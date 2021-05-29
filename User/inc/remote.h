@@ -41,6 +41,8 @@
 #define REMOTE_SPI_FLAG_TIMEOUT_RXNE (0x0001)
 #define REMOTE_SPI_FLAG_CLEAR        (0x0000)
 
+#define InvalidByte 0xFF
+
 /*END OF SPI DEFINATION*/
 
 /*
@@ -56,11 +58,7 @@ void Remote_Chip_Init(void);
 
 u8 Remote_SPI_SendByte(u8 byte);
 
-u8 Remote_SPI_SendBytes(u8 *bytePtr, u8 cnt);
-
-u8 Remote_SPI_ReceiveByte(u8 *byte);
-
-u8 Remote_SPI_ReceiveBytes(u8 *ByteBuffer, u8 cnt);
+u8 Remote_SPI_ReceiveByte(void);
 
 u8 Remote_SPI_Callback(u16 ErrorCode);
 

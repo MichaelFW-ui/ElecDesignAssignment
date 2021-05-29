@@ -1,5 +1,4 @@
 #include "remote.h"
-#include "stm32f10x.h"
 
 void Remote_SPI_Init() {
     SPI_InitTypeDef SPI_InitStructure;
@@ -74,10 +73,13 @@ u8 Remote_SPI_SendByte(u8 byte) {
     return SPI_I2S_ReceiveData(REMOTE_SPIx);
 }
 
+u8 Remote_SPI_ReceiveByte(void) {
+    return (Remote_SPI_SendByte(InvalidByte));
+}
+
 u8 Remote_SPI_Callback(u16 ErrorCode) {
     /*
                 TODO : Completion
-    
     */
     return 0;
 }

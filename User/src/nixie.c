@@ -1,5 +1,4 @@
 #include "nixie.h"
-#include "stm32f10x.h"
 
 #define NIXIE_OVERFLOW 10000
 

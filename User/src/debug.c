@@ -56,14 +56,25 @@ void Debug_USART_SendByte(u8 byte) {
     while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_TXE) == RESET)
         ;
 }
+extern int cycle;
 
 void DEBUG_USART_IRQHandler(void) {
     u8 tmp;
     if (USART_GetITStatus(DEBUG_USARTx, USART_IT_RXNE) != RESET) {
+        USART_ClearITPendingBit(DEBUG_USARTx, USART_IT_RXNE);
         tmp = USART_ReceiveData(DEBUG_USARTx);
         Debug_CommandHandler(tmp);
-       USART_ClearITPendingBit(DEBUG_USARTx, USART_IT_RXNE);
+        // Debug_USART_SendByte(tmp);
+        // cycle += 100;
     }
+    // https://blog.csdn.net/origin333/article/details/49992383
+    // 检查 ORE 标志
+    if (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_ORE) == SET) {
+        USART_ClearFlag(DEBUG_USARTx, USART_FLAG_ORE);
+        USART_ReceiveData(DEBUG_USARTx);
+    }
+    // before the ORE is cleared, never do printf.
+    // You have to clear the ORE.
 }
 
 // Incomming commands handler, process until no more data coming in.

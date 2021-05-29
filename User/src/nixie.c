@@ -7,10 +7,10 @@ u16 static Nixie_NumberPins[(10 + 1)] = {0};
 u16 static volatile Current = 0;
 u8 static volatile count = 0;
 u8 static volatile Point = 0;
-u16 static __NumberPins[] = {NIXIE_GPIO_PIN_0, NIXIE_GPIO_PIN_1,  NIXIE_GPIO_PIN_2,
-                    NIXIE_GPIO_PIN_3, NIXIE_GPIO_PIN_4,  NIXIE_GPIO_PIN_5,
-                    NIXIE_GPIO_PIN_6, NIXIE_GPIO_PIN_7,  NIXIE_GPIO_PIN_8,
-                    NIXIE_GPIO_PIN_9, NIXIE_GPIO_PIN_10, NIXIE_GPIO_PIN_11};
+u16 static __NumberPins[] = {
+    NIXIE_GPIO_PIN_0, NIXIE_GPIO_PIN_1, NIXIE_GPIO_PIN_2,  NIXIE_GPIO_PIN_3,
+    NIXIE_GPIO_PIN_4, NIXIE_GPIO_PIN_5, NIXIE_GPIO_PIN_6,  NIXIE_GPIO_PIN_7,
+    NIXIE_GPIO_PIN_8, NIXIE_GPIO_PIN_9, NIXIE_GPIO_PIN_10, NIXIE_GPIO_PIN_11};
 
 /*
 ** Init the Pin list:

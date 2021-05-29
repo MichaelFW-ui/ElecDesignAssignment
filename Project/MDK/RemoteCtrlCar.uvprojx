@@ -557,6 +557,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\src\steer.c</FilePath>
             </File>
+            <File>
+              <FileName>remote.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\src\remote.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -1,4 +1,6 @@
 #include "remote.h"
+#include "stdio.h"
+#include "delay.h"
 
 void Remote_SPI_Init() {
     SPI_InitTypeDef SPI_InitStructure;
@@ -51,6 +53,7 @@ void Remote_SPI_Init() {
     SPI_Cmd(REMOTE_SPIx, ENABLE);
 }
 
+// Use when the cs is low
 u8 Remote_SPI_SendByte(u8 byte) {
     u32 SPITimeout = REMOTE_SPI_TIMEOUT;
 
@@ -78,8 +81,51 @@ u8 Remote_SPI_ReceiveByte(void) {
 }
 
 u8 Remote_SPI_Callback(u16 ErrorCode) {
+    return printf("Error %x\r\n", ErrorCode);
+}
+
+void Remote_NRF_GPIO_Init(void) {
+    GPIO_InitTypeDef GPIO_InitStructure;
+    EXTI_InitTypeDef EXTI_InitStructure;
+    REMOTE_NRF_CE_APBxClk_Fn(REMOTE_NRF_CE_CLK, ENABLE);
+    REMOTE_NRF_IRQ_APBxClk_Fn(REMOTE_NRF_IRQ_CLK, ENABLE);
+
+    // CE
+    GPIO_InitStructure.GPIO_Pin = REMOTE_NRF_CE_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(REMOTE_NRF_CE_PORT, &GPIO_InitStructure);
+
+    // IRQ and GPIO
+    GPIO_InitStructure.GPIO_Pin = REMOTE_NRF_IRQ_PIN;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_Init(REMOTE_NRF_IRQ_PORT, &GPIO_InitStructure);
+
+    // IRQ and EXTI
+    GPIO_EXTILineConfig(NRF_IRQ_EXTI_PORTSOURCE, NRF_IRQ_EXTI_PINSOURCE);
+    EXTI_InitStructure.EXTI_Line = NRF_IRQ_EXTI_LINE;
+    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+    EXTI_Init(&EXTI_InitStructure);
+}
+
+void Remote_NRF_NVIC_Init(void) {
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    NVIC_InitStructure.NVIC_IRQChannel = NRF_IRQ_EXTI_IRQ;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+}
+
+void Remote_NRF_Init() {
+    Remote_NRF_NVIC_Init();
+    Remote_NRF_GPIO_Init();
+
+
     /*
-                TODO : Completion
+    **          TODO:Command lines Completion
     */
-    return 0;
 }

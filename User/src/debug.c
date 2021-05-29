@@ -1,4 +1,5 @@
 #include "debug.h"
+#include "stdio.h"
 
 void Debug_USART_Init() {
     // NVIC configuration
@@ -59,13 +60,42 @@ void Debug_USART_SendByte(u8 byte) {
 void DEBUG_USART_IRQHandler(void) {
     u8 tmp;
     if (USART_GetITStatus(DEBUG_USARTx, USART_IT_RXNE) != RESET) {
-        tmp = Debug_USART_ReceiveByte();
-        /*
-        **************************************8
-        TODO: Completion
-
-
-        */
+        tmp = USART_ReceiveData(DEBUG_USARTx);
+        Debug_CommandHandler(tmp);
        USART_ClearITPendingBit(DEBUG_USARTx, USART_IT_RXNE);
     }
+}
+
+// Incomming commands handler, process until no more data coming in.
+void Debug_CommandHandler(u8 cmd) {
+    /*
+    **              TODO: Completion
+    */
+    switch (cmd) {
+        case 'O':
+            Debug_OnCommand_O();
+            break;
+        default:
+            // ignored
+            printf("Unexpected\r\n");
+            break;
+    }
+}
+
+int fputc(int ch, FILE *f) {
+    Debug_USART_SendByte(ch);
+    return ch;
+}
+
+int fgetc(FILE *f) {
+    while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_RXNE) == RESET)
+        ;
+    return (int)USART_ReceiveData(DEBUG_USARTx);
+}
+
+
+void Debug_OnCommand_O(void) {
+    /*
+    **          TODO:
+    */
 }

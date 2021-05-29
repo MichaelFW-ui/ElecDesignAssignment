@@ -94,9 +94,9 @@ void Nixie_Display(u8 ordinal) {
     u16 digit = 0;
     u16 base = 1;
     if (ordinal > 4) return;
-    if (Current == NIXIE_OVERFLOW)
+    if (Current == NIXIE_OVERFLOW) {
         digit = 10;
-    else {
+    } else {
         for (int i = 0; i < ordinal; ++i) base *= 10;
         digit = (Current / base) % 10;
     }

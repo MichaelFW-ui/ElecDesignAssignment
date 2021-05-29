@@ -35,6 +35,9 @@ void Debug_USART_Init(void);
 
 void Debug_USART_SendByte(u8 byte);
 
-u8 Debug_USART_ReceiveByte(void);
+void Debug_CommandHandler(u8 cmd);
+
+// specific Command handlers
+void Debug_OnCommand_O(void);
 
 #endif

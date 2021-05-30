@@ -184,6 +184,14 @@ void Remote_NRF_Init() {
     REMOTE_SPI_CS_HIGH();
     REMOTE_DELAY();
 
+    // PWR_UP set high
+    reset = 0;
+    set = SetBitAt(0, 1);
+    Remote_NRF_WriteReg(CONFIG, reset, set);
+    REMOTE_DELAY();
+
+    REMOTE_NRF_CE_HIGH();
+
     return;
 }
 
@@ -209,4 +217,60 @@ u8 Remote_NRF_WriteReg(u8 reg, u8 reset, u8 set) {
     rx = Remote_SPI_SendByte(tx);
     REMOTE_SPI_CS_HIGH();
     return rx;
+}
+
+Remote_DataStructure RxData       = {0};
+Remote_ACKDataStructure RxACKData = {0};
+// I suppose this will take more than 500us. Careful.
+void NRF_IRQHandler() {
+    if (EXTI_GetITStatus(NRF_IRQ_EXTI_LINE) != RESET) {
+        int rx, tx;
+        tx = NOP;
+        REMOTE_SPI_CS_LOW();
+        rx = Remote_SPI_SendByte(tx);
+        REMOTE_SPI_CS_HIGH();
+        REMOTE_DELAY();
+        if (rx & (1 << 6)) {
+            // ACknowledgement
+            REMOTE_SPI_CS_LOW();
+            tx      = 0xa8;        // W_ACK_PAYLOAD,  PPP = 000b
+            rx      = Remote_SPI_SendByte(tx);
+            u8 *ptr = (u8 *)&RxACKData;
+            for (int i = 0; i < REMOTE_ACKDATA_SIZE; ++i) {
+                tx = *((u8 *)&RxACKData);
+                Remote_SPI_SendByte(tx);
+            }
+            REMOTE_SPI_CS_HIGH();
+            REMOTE_DELAY();
+
+            // Read data
+            REMOTE_SPI_CS_LOW();
+            tx  = RD_RX_PLOAD;
+            rx  = Remote_SPI_SendByte(tx);
+            tx  = NOP;
+            ptr = (u8 *)&RxData;
+            for (int i = 0; i < REMOTE_DATA_SIZE; ++i) {
+                *(ptr + i) = Remote_SPI_SendByte(tx);
+            }
+            REMOTE_SPI_CS_HIGH();
+            REMOTE_DELAY();
+
+            // Clear the flag
+            REMOTE_SPI_CS_LOW();
+            tx = WRITE_RG | STATUS;
+            rx = Remote_SPI_SendByte(tx);
+            tx = SetBitAt(rx, 6);
+            rx = Remote_SPI_SendByte(tx);
+            REMOTE_SPI_CS_HIGH();
+            REMOTE_DELAY();
+        }
+        /*
+        **
+        **
+        **      TODO:Completion
+        **      How to use the command lines?
+        **
+        */
+        EXTI_ClearITPendingBit(NRF_IRQ_EXTI_LINE);
+    }
 }

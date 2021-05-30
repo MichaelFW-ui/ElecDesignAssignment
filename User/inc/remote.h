@@ -82,8 +82,8 @@
 #define NRF_IRQHandler          EXTI2_IRQHandler
 
 // Operators
-#define READ_RG    0x00        // Read register
-#define WRITE_RG   0x20        // write register
+#define READ_RG     0x00        // Read register
+#define WRITE_RG    0x20        // write register
 #define RD_RX_PLOAD 0x61        // Read RX load
 #define WR_TX_PLOAD 0xA0        // write TX load
 #define FLUSH_TX    0xE1        // clear TX FIFO when transmitting
@@ -148,7 +148,8 @@ typedef struct {
     DataStatus Status;        // Reserved for ACK.
 } Remote_ACKDataStructure;
 
-#define REMOTE_DATA_SIZE (sizeof Remote_DataStructure)
+#define REMOTE_DATA_SIZE (sizeof (Remote_DataStructure))
+#define REMOTE_ACKDATA_SIZE (sizeof (Remote_ACKDataStructure))
 
 /*                 END OF Remote Ctrl Data structure                          */
 

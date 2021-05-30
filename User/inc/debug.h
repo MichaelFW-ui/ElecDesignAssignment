@@ -29,15 +29,24 @@
 #define DEBUG_USART_IRQ             USART1_IRQn
 #define DEBUG_USART_IRQHandler      USART1_IRQHandler
 
+
+#define DEBUG_USART_BUFFER_SIZE         100
+
+#define Debug_USART_BufferPush(x)                       \
+    { Debug_USART_CommandBuffer[Debug_USART_BufferCur++] = x; } \
+    while (0)
+
+#define Debug_USART_BufferClear() \
+    { Debug_USART_BufferCur = 0; } \
+    while (0)
+
 /*      END OF USART1 DEFINATION           */
 
 void Debug_USART_Init(void);
 
 void Debug_USART_SendByte(u8 byte);
 
-void Debug_CommandHandler(u8 cmd);
+void Debug_CommandHandler(void);
 
-// specific Command handlers
-void Debug_OnCommand_O(void);
 
 #endif

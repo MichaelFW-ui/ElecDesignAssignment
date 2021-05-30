@@ -56,16 +56,19 @@ void Debug_USART_SendByte(u8 byte) {
     while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_TXE) == RESET)
         ;
 }
-extern int cycle;
+
+
+u8 Debug_USART_CommandBuffer[DEBUG_USART_BUFFER_SIZE] = {0};
+u16 Debug_USART_BufferCur = 0;
+
 
 void DEBUG_USART_IRQHandler(void) {
     u8 tmp;
     if (USART_GetITStatus(DEBUG_USARTx, USART_IT_RXNE) != RESET) {
         USART_ClearITPendingBit(DEBUG_USARTx, USART_IT_RXNE);
-        tmp = USART_ReceiveData(DEBUG_USARTx);
-        Debug_CommandHandler(tmp);
-        // Debug_USART_SendByte(tmp);
-        // cycle += 100;
+        Debug_USART_BufferPush(tmp = USART_ReceiveData(DEBUG_USARTx));
+        if (tmp == '\n') Debug_CommandHandler();
+        // tmp = USART_ReceiveData(DEBUG_USARTx);
     }
     // https://blog.csdn.net/origin333/article/details/49992383
     // 检查 ORE 标志
@@ -78,19 +81,19 @@ void DEBUG_USART_IRQHandler(void) {
 }
 
 // Incomming commands handler, process until no more data coming in.
-void Debug_CommandHandler(u8 cmd) {
+void Debug_CommandHandler() {
     /*
     **              TODO: Completion
     */
-    switch (cmd) {
-        case 'O':
-            Debug_OnCommand_O();
-            break;
-        default:
-            // ignored
-            printf("Unexpected\r\n");
-            break;
-    }
+   u8 *ptrBuffer = Debug_USART_CommandBuffer;
+   u16 cur = Debug_USART_BufferCur;
+    /*        Modify this for your commands                                   */
+   for (int i = 0; i < cur; ++i) {
+       printf("%c", *(ptrBuffer + i));
+   }
+    /*       End of modification                                              */
+
+       Debug_USART_BufferClear();
 }
 
 int fputc(int ch, FILE *f) {
@@ -104,9 +107,3 @@ int fgetc(FILE *f) {
     return (int)USART_ReceiveData(DEBUG_USARTx);
 }
 
-
-void Debug_OnCommand_O(void) {
-    /*
-    **          TODO:
-    */
-}

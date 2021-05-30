@@ -37,18 +37,18 @@ void Remote_SPI_Init() {
 
     /*          SPI init                    */
     SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
-    SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-    SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
-    SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;
+    SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;
+    SPI_InitStructure.SPI_DataSize  = SPI_DataSize_8b;
+    SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;
     // CPOL = 0
     SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;
     // CPHA = 0
-    SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
+    SPI_InitStructure.SPI_NSS               = SPI_NSS_Soft;
     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
-    SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+    SPI_InitStructure.SPI_FirstBit          = SPI_FirstBit_MSB;
     // 高位在前
     SPI_InitStructure.SPI_CRCPolynomial = 7;
-    // invalid because it won't be used 
+    // invalid because it won't be used
     SPI_Init(REMOTE_SPIx, &SPI_InitStructure);
     SPI_Cmd(REMOTE_SPIx, ENABLE);
 }
@@ -76,9 +76,7 @@ u8 Remote_SPI_SendByte(u8 byte) {
     return SPI_I2S_ReceiveData(REMOTE_SPIx);
 }
 
-u8 Remote_SPI_ReceiveByte(void) {
-    return (Remote_SPI_SendByte(InvalidByte));
-}
+u8 Remote_SPI_ReceiveByte(void) { return (Remote_SPI_SendByte(InvalidByte)); }
 
 u8 Remote_SPI_Callback(u16 ErrorCode) {
     return printf("Error %x\r\n", ErrorCode);
@@ -91,20 +89,20 @@ void Remote_NRF_GPIO_Init(void) {
     REMOTE_NRF_IRQ_APBxClk_Fn(REMOTE_NRF_IRQ_CLK, ENABLE);
 
     // CE
-    GPIO_InitStructure.GPIO_Pin = REMOTE_NRF_CE_PIN;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Pin   = REMOTE_NRF_CE_PIN;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(REMOTE_NRF_CE_PORT, &GPIO_InitStructure);
 
     // IRQ and GPIO
-    GPIO_InitStructure.GPIO_Pin = REMOTE_NRF_IRQ_PIN;
+    GPIO_InitStructure.GPIO_Pin  = REMOTE_NRF_IRQ_PIN;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
     GPIO_Init(REMOTE_NRF_IRQ_PORT, &GPIO_InitStructure);
 
     // IRQ and EXTI
     GPIO_EXTILineConfig(NRF_IRQ_EXTI_PORTSOURCE, NRF_IRQ_EXTI_PINSOURCE);
-    EXTI_InitStructure.EXTI_Line = NRF_IRQ_EXTI_LINE;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+    EXTI_InitStructure.EXTI_Line    = NRF_IRQ_EXTI_LINE;
+    EXTI_InitStructure.EXTI_Mode    = EXTI_Mode_Interrupt;
     EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
     EXTI_Init(&EXTI_InitStructure);
@@ -113,10 +111,10 @@ void Remote_NRF_GPIO_Init(void) {
 void Remote_NRF_NVIC_Init(void) {
     NVIC_InitTypeDef NVIC_InitStructure;
 
-    NVIC_InitStructure.NVIC_IRQChannel = NRF_IRQ_EXTI_IRQ;
+    NVIC_InitStructure.NVIC_IRQChannel                   = NRF_IRQ_EXTI_IRQ;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority        = 1;
+    NVIC_InitStructure.NVIC_IRQChannelCmd                = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 }
 

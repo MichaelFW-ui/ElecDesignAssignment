@@ -1,6 +1,8 @@
 #ifndef __STEER_H
 #define __STEER_H
 
+#include "remote.h"
+
 #include "stm32f10x.h"
 
 /*                        Defination of GPIO                                  */

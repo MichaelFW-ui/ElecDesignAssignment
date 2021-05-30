@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "delay.h"
 
+// Init the SPI part, not including the nrf chip.
 void Remote_SPI_Init() {
     SPI_InitTypeDef SPI_InitStructure;
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -53,7 +54,7 @@ void Remote_SPI_Init() {
     SPI_Cmd(REMOTE_SPIx, ENABLE);
 }
 
-// Use when the cs is low
+// Use when the CS is LOW
 u8 Remote_SPI_SendByte(u8 byte) {
     u32 SPITimeout = REMOTE_SPI_TIMEOUT;
 
@@ -118,6 +119,7 @@ void Remote_NRF_NVIC_Init(void) {
     NVIC_Init(&NVIC_InitStructure);
 }
 
+// Init the NRF chip
 void Remote_NRF_Init() {
     Remote_NRF_NVIC_Init();
     Remote_NRF_GPIO_Init();
@@ -126,4 +128,85 @@ void Remote_NRF_Init() {
     /*
     **          TODO:Command lines Completion
     */
+
+    u8 tx;
+    u8 rx;
+
+    REMOTE_SPI_CS_LOW();
+    tx = READ_RG | CONFIG;         // read CONFIG
+    rx = Remote_SPI_SendByte(tx);
+    rx = Remote_SPI_ReceiveByte();
+    REMOTE_SPI_CS_HIGH();
+    REMOTE_DELAY();
+
+    tx = SetBitAt(rx, 0);           // PRX
+    tx = SetBitAt(tx, 3);           // enable CRC
+    tx = SetBitAt(tx, 2);
+    tx = ResetBitAt(tx, 1);
+    REMOTE_SPI_CS_HIGH();
+    rx = Remote_SPI_SendByte(WRITE_RG | CONFIG);
+    rx = Remote_SPI_SendByte(tx);
+    REMOTE_SPI_CS_HIGH();
+    REMOTE_DELAY();
+
+    u8 reset = 0;
+    u8 set = 0;
+
+    //  Address width 5 bytes
+    set = SetBitAt(0, 0) | SetBitAt(0, 1);
+    reset = 0;
+    Remote_NRF_WriteReg(SETUP_AW, reset, set);
+    REMOTE_DELAY();
+
+    // 2400 + 100 = 2500MHz
+    set = 100;
+    reset = 0;
+    Remote_NRF_WriteReg(RF_CH, reset, set);
+    REMOTE_DELAY();
+
+    // 1Mbps, 0dBm
+    reset = SetBitAt(0, 3);
+    set = 0;
+    Remote_NRF_WriteReg(RF_SETUP, reset, set);
+    REMOTE_DELAY();
+
+    // Send PRX address : PRX_ADDR:0xf0f0f0f0f0
+    // LSB!!
+    reset = 0;
+    set = 0;
+    REMOTE_SPI_CS_LOW();
+    tx = WRITE_RG | RX_ADDR_P0;
+    rx = Remote_SPI_SendByte(tx);
+    for (int i = 0; i < 5; ++i) {
+        tx = (PRX_ADDR >> (i * 8)) % 0x00000100;
+        Remote_SPI_SendByte(tx);
+    }
+    REMOTE_SPI_CS_HIGH();
+    REMOTE_DELAY();
+
+    return;
+}
+
+
+u8 Remote_NRF_WriteReg(u8 reg, u8 reset, u8 set) {
+    u8 tx;
+    u8 rx;
+
+    // read reg first
+    tx = READ_RG | reg;
+    REMOTE_SPI_CS_LOW();
+    rx = Remote_SPI_SendByte(tx);
+    rx = Remote_SPI_ReceiveByte();
+    REMOTE_SPI_CS_HIGH();
+    REMOTE_DELAY();
+
+    // Set the bytes and write them
+    tx = WRITE_RG | reg;
+    REMOTE_SPI_CS_LOW();
+    Remote_SPI_SendByte(tx);
+    tx = rx & ~reset;
+    tx = tx | set;
+    rx = Remote_SPI_SendByte(tx);
+    REMOTE_SPI_CS_HIGH();
+    return rx;
 }

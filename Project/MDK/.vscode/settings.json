@@ -5,7 +5,16 @@
         "steer.h": "c",
         "motor.h": "c",
         "remote.h": "c",
-        "debug.h": "c"
+        "debug.h": "c",
+        "functional": "c",
+        "optional": "c",
+        "istream": "c",
+        "ostream": "c",
+        "system_error": "c",
+        "array": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

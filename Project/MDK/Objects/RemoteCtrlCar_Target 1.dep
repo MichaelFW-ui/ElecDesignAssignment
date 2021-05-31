@@ -760,7 +760,7 @@ I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 F (..\..\User\stm32f10x_conf.h)(0x4D99A59E)()
-F (..\..\User\src\delay.c)(0x60B0D26E)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\delay.o --omf_browse .\objects\delay.crf --depend .\objects\delay.d)
+F (..\..\User\src\delay.c)(0x60B49A87)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\delay.o --omf_browse .\objects\delay.crf --depend .\objects\delay.d)
 I (..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x4D783CB4)
 I (..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x4D523B58)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
@@ -789,7 +789,7 @@ I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
-F (..\..\User\src\nixie.c)(0x60B46CE0)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\nixie.o --omf_browse .\objects\nixie.crf --depend .\objects\nixie.d)
+F (..\..\User\src\nixie.c)(0x60B4ECC5)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\nixie.o --omf_browse .\objects\nixie.crf --depend .\objects\nixie.d)
 I (..\..\User\inc\nixie.h)(0x60B0DCAD)
 I (..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x4D783CB4)
 I (..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x4D523B58)
@@ -819,8 +819,8 @@ I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
-F (..\..\User\src\motor.c)(0x60B46CB9)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
-I (..\..\User\inc\motor.h)(0x60B46E5E)
+F (..\..\User\src\motor.c)(0x60B4ECC3)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
+I (..\..\User\inc\motor.h)(0x60B49A81)
 I (..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x4D783CB4)
 I (..\..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h)(0x4D523B58)
 I (D:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EDB3E)
@@ -850,7 +850,7 @@ I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x4D783BB4)
 I (..\..\User\inc\remote.h)(0x60B38B70)
-F (..\..\User\src\steer.c)(0x60B4963E)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\steer.o --omf_browse .\objects\steer.crf --depend .\objects\steer.d)
+F (..\..\User\src\steer.c)(0x60B4ECC5)(--c99 --gnu -c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\Libraries\STM32F10x_StdPeriph_Driver\inc -I ..\..\User -I ..\..\Libraries\CMSIS\CM3\CoreSupport -I ..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x -I ..\..\User\inc-I.\RTE\_Target_1-ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include-ID:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="526" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o .\objects\steer.o --omf_browse .\objects\steer.crf --depend .\objects\steer.d)
 I (..\..\User\inc\steer.h)(0x60B46FA8)
 I (..\..\User\inc\remote.h)(0x60B38B70)
 I (..\..\Libraries\CMSIS\CM3\DeviceSupport\ST\STM32F10x\stm32f10x.h)(0x4D783CB4)

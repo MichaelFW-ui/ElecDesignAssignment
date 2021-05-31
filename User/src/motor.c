@@ -40,7 +40,8 @@ void Motor_Init() {
     GPIO_Init(MOTOR_PWM_EN_PORT, &GPIO_InitStructure);
 }
 
-// 100Hz / 2 = 50Hz, because APB1 is 36MHz
+// 100Hz, because APB1 is 36MHz, but APB1 for 
+// TIM is doubled.
 void Motor_TIM_Init() {
    TIM_TimeBaseInitTypeDef  TIM_TimeBaseInitStructure;
 
@@ -63,6 +64,11 @@ void Motor_TIM_IRQ_Init() {
     NVIC_Init(&NVIC_InitStructure);
 }
 
+u8 static volatile MotorCounter = 0;
+u8 static volatile MotorDirection = 0;
+u8 static volatile MotorDutyCycle = 0;
+// 0 for A and 1 for B
+
 void Motor_TIM_IRQHandler() {
     if (TIM_GetITStatus(MOTOR_TIM, TIM_IT_Update) != RESET) {
         /*
@@ -73,6 +79,20 @@ void Motor_TIM_IRQHandler() {
         **
         **
         */
+        if (MotorCounter++ < MotorDutyCycle) {
+            GPIO_ResetBits(MOTOR_PWM_EN_PORT, MOTOR_PWM_EN_PIN);
+            if (MotorDirection) {
+                GPIO_SetBits(MOTOR_PWM_A_PORT, MOTOR_PWM_A_PIN);
+                GPIO_ResetBits(MOTOR_PWM_B_PORT, MOTOR_PWM_B_PIN);
+            } else {
+                GPIO_ResetBits(MOTOR_PWM_A_PORT, MOTOR_PWM_A_PIN);
+                GPIO_SetBits(MOTOR_PWM_B_PORT, MOTOR_PWM_B_PIN);
+            }
+        } else {
+            GPIO_ResetBits(MOTOR_PWM_A_PORT, MOTOR_PWM_A_PIN);
+            GPIO_ResetBits(MOTOR_PWM_B_PORT, MOTOR_PWM_B_PIN);
+            GPIO_SetBits(MOTOR_PWM_EN_PORT, MOTOR_PWM_EN_PIN);
+        }
         TIM_ClearITPendingBit(MOTOR_TIM, TIM_IT_Update);
     }
 }

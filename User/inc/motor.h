@@ -38,8 +38,9 @@
 /*                 END OF TIM DEFINATION                                      */
 
 
-//          PWM frequency: 50Hz, that is 
-//          20ms every round
+//          PWM frequency: 100Hz, that is 
+//          10ms every round
+//          APB1 is doubled for TIM
 
 void Motor_OnCommandLine(Remote_DataStructure *data);
 

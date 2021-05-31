@@ -27,6 +27,7 @@ void Steer_TIM_Init() {
     TIM_Cmd(STEER_TIM, ENABLE);
 }
 
+// 100Hz
 void Steer_TIM_IRQ_Init() {
     NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -38,6 +39,14 @@ void Steer_TIM_IRQ_Init() {
     NVIC_Init(&NVIC_InitStructure);
 }
 
+u8 static volatile SteerCounter = 0;
+u16 static volatile SteerPosition = 0;
+u8 static volatile SteerDirection = 0;
+// 0 for A and 1 for B
+
+// PID
+// read position to pretend it from broken
+// direction, careful
 void Steer_TIM_IRQHandler() {
     if (TIM_GetITStatus(STEER_TIM, TIM_IT_Update) != RESET) {
         /*

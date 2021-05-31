@@ -48,7 +48,7 @@ void Nixie_GPIO_Init() {
     GPIO_InitStruture.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(NIXIE_GPIO_PORT, &GPIO_InitStruture);
 }
-// 2ms a period, APB1 is 36MHz
+// 1ms a period, APB1 is 36MHz, but is doubled
 void Nixie_TIM_Init() {
     TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
 

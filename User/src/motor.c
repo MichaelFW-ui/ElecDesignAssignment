@@ -40,6 +40,7 @@ void Motor_Init() {
     GPIO_Init(MOTOR_PWM_EN_PORT, &GPIO_InitStructure);
 }
 
+// 100Hz / 2 = 50Hz, because APB1 is 36MHz
 void Motor_TIM_Init() {
    TIM_TimeBaseInitTypeDef  TIM_TimeBaseInitStructure;
 

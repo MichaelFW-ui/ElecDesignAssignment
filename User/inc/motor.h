@@ -38,8 +38,8 @@
 /*                 END OF TIM DEFINATION                                      */
 
 
-//          PWM frequency: 100Hz, that is 
-//          10ms every round
+//          PWM frequency: 50Hz, that is 
+//          20ms every round
 
 void Motor_OnCommandLine(Remote_DataStructure *data);
 

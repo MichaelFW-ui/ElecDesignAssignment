@@ -143,7 +143,7 @@ void Remote_NRF_Init() {
     tx = SetBitAt(tx, 3);           // enable CRC
     tx = SetBitAt(tx, 2);
     tx = ResetBitAt(tx, 1);
-    REMOTE_SPI_CS_HIGH();
+    REMOTE_SPI_CS_LOW();
     rx = Remote_SPI_SendByte(WRITE_RG | CONFIG);
     rx = Remote_SPI_SendByte(tx);
     REMOTE_SPI_CS_HIGH();

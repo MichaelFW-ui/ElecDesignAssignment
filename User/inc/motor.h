@@ -4,7 +4,7 @@
 #include "stm32f10x.h"
 #include "remote.h"
 
-/*                    Defination of GPIO                                      */
+/*                    Definition of GPIO                                      */
 // the first pin
 #define MOTOR_PWM_A_APBxClk_Fn RCC_APB2PeriphClockCmd
 #define MOTOR_PWM_A_CLK RCC_APB2Periph_GPIOA
@@ -26,16 +26,16 @@
 
 
 
-/*                        END OF of GPIO Defination                           */
+/*                        END OF of GPIO Definition                           */
 
 
-/*                        TIM DEFINATION                                      */
+/*                        TIM Definition                                      */
 #define MOTOR_TIM TIM7
 #define MOTOR_TIM_APBxClkCmd RCC_APB1PeriphClockCmd
 #define MOTOR_TIM_CLK RCC_APB1Periph_TIM7
 #define MOTOR_TIM_IRQ TIM7_IRQn
 #define MOTOR_TIM_IRQHandler TIM7_IRQHandler
-/*                 END OF TIM DEFINATION                                      */
+/*                 END OF TIM Definition                                      */
 
 
 //          PWM frequency: 100Hz, that is 

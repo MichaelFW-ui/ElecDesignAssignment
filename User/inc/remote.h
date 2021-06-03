@@ -46,7 +46,7 @@
 
 #define InvalidByte 0xFF
 
-/*END OF SPI DEFINATION*/
+/*END OF SPI Definition*/
 
 /*
 **          Data of the SPI from NRF chip:

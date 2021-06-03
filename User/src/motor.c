@@ -93,6 +93,7 @@ void Motor_TIM_IRQHandler() {
             GPIO_ResetBits(MOTOR_PWM_B_PORT, MOTOR_PWM_B_PIN);
             GPIO_SetBits(MOTOR_PWM_EN_PORT, MOTOR_PWM_EN_PIN);
         }
+        MotorCounter %= 100;
         TIM_ClearITPendingBit(MOTOR_TIM, TIM_IT_Update);
     }
 }

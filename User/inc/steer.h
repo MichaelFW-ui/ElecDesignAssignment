@@ -5,17 +5,24 @@
 
 #include "stm32f10x.h"
 
-/*                        Defination of GPIO                                  */
+/*                        Definition of GPIO                                  */
 
-/*                        END OF GPIO Defination                              */
 
-/*                        Defination of TIM                                   */
+
+
+
+
+
+
+/*                        END OF GPIO Definition                              */
+
+/*                        Definition of TIM                                   */
 #define STEER_TIM TIM5
 #define STEER_TIM_APBxClkCmd RCC_APB1PeriphClockCmd
 #define STEER_TIM_CLK RCC_APB1Periph_TIM5
 #define STEER_TIM_IRQ TIM5_IRQn
 #define STEER_TIM_IRQHandler TIM5_IRQHandler
-/*                        END OF TIM Defination                               */
+/*                        END OF TIM Definition                               */
 //          PWM frequency: Same as motor
 
 void Steer_OnCommandLine(Remote_DataStructure *data);

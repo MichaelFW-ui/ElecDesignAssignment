@@ -12,7 +12,7 @@
 **  RX A10
 */
 
-/*          USART1 DEFINATION        */
+/*          USART1 Definition        */
 
 #define DEBUG_USARTx           USART1
 #define DEBUG_USART_CLK        RCC_APB2Periph_USART1
@@ -40,7 +40,7 @@
     { Debug_USART_BufferCur = 0; } \
     while (0)
 
-/*      END OF USART1 DEFINATION           */
+/*      END OF USART1 Definition           */
 
 void Debug_USART_Init(void);
 

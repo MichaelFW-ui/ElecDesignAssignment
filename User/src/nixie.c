@@ -16,6 +16,8 @@ u16 static __NumberPins[] = {
 ** 0 - 9 for ten numbers
 ** 10 for dash only
 */
+
+
 void Nixie_Init() {
     Nixie_GPIO_Init();
     Nixie_TIM_Init();
@@ -78,7 +80,6 @@ void Nixie_TIM_IRQHandler() {
         TIM_ClearITPendingBit(NIXIE_TIM, TIM_IT_Update);
     }
 }
-
 
 void Nixie_SetNumber(u16 display) {
     if (display >= NIXIE_OVERFLOW) Current = NIXIE_OVERFLOW;

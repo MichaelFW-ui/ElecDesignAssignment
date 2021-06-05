@@ -1,3 +1,13 @@
+/**
+ * @file remote.h
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __REMOTE_H
 #define __REMOTE_H
 

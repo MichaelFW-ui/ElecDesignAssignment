@@ -1,10 +1,63 @@
+/**
+ * @file steer.c
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief the module functions under a 10ms control data flow.
+ * You have to input the desired position regularly.
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "steer.h"
 
 #include "stm32f10x.h"
 
 u16 Steer_ADC_Converted = 0;
 
+u8 static volatile SteerCounter   = 0;
+u16 static volatile SteerPosition = 0;
+u16 static volatile SteerDestinationPos = 0;
+
+u8 static volatile SteerDirection = 0;
+u8 static volatile SteerDestinationDir = 0;
+// 0 for positive
+u8 static volatile SteerDutyCycle = 0;
+u8 static volatile SteerAccelDirection = 0;
+// 0 for A PWM, 1 for B PWM
+
+
+
+Steer_PID_TypeDef Steer_PID;
+
+#define STEER_MID_RES 2047
+// Mid point resistence
+
+/**
+ * @brief Get Current Position
+ * 
+ */
+void Steer_GetPosition(void) {
+    u16 tmp = Steer_ADC_Converted;
+    if (tmp > STEER_MID_RES) {
+        SteerPosition = tmp - STEER_MID_RES;
+        SteerDirection = 0;
+    } else {
+        SteerPosition = STEER_MID_RES - tmp;
+        SteerDirection = 1;
+    }
+}
+
 void Steer_OnCommandLine(Remote_DataStructure *data) {
+    Steer_GetPosition();
+    if (data->Direction > 0) {
+        SteerDestinationPos = data->Direction;
+        SteerDestinationDir = 0;
+    } else {
+        SteerDestinationPos = -data->Direction;
+        SteerDestinationDir = 1;
+    }
+    Steer_PID_Operate();
     /*
     **
     **
@@ -46,10 +99,6 @@ void Steer_TIM_IRQ_Init() {
     NVIC_Init(&NVIC_InitStructure);
 }
 
-u8 static volatile SteerCounter   = 0;
-u16 static volatile SteerPosition = 0;
-u8 static volatile SteerDirection = 0;
-u8 static volatile SteerDutyCycle = 0;
 // 0 for A and 1 for B
 
 // PID
@@ -64,8 +113,8 @@ u8 static volatile SteerDutyCycle = 0;
  */
 void Steer_TIM_IRQHandler() {
     if (TIM_GetITStatus(STEER_TIM, TIM_IT_Update) != RESET) {
-        if (SteerCounter < SteerDutyCycle) {
-            if (SteerDirection) {
+        if (SteerCounter++ < SteerDutyCycle) {
+            if (SteerAccelDirection) {
                 GPIO_SetBits(STEER_PWM_B_PORT, STEER_PWM_B_PIN);
                 GPIO_ResetBits(STEER_PWM_A_PORT, STEER_PWM_A_PIN);
             } else {
@@ -76,16 +125,10 @@ void Steer_TIM_IRQHandler() {
             GPIO_ResetBits(STEER_PWM_A_PORT, STEER_PWM_A_PIN);
             GPIO_ResetBits(STEER_PWM_B_PORT, STEER_PWM_B_PIN);
         }
-        SteerCounter = (SteerCounter + 1) % 100;
-        /*
-        **
-        **
-        **
-        ** TODO:Comletion for PID Control Flow version
-        **
-        **
-        **
-        */
+        SteerCounter %= 100;
+        if (!SteerCounter) {
+            Steer_PID_Operate();
+        }
         TIM_ClearITPendingBit(STEER_TIM, TIM_IT_Update);
     }
 }
@@ -170,10 +213,54 @@ void Steer_ADC_IRQHandler() {
 
 /*                  PID TRY                                                   */
 
-Steer_PID_TypeDef Steer_PID;
 
 void Steer_PID_Init() {
     /*
     ** TODO:
     */
+
+   // Initialize
+    Steer_PID.Kd            = 0;
+    Steer_PID.Ki            = 0;
+    Steer_PID.Kp            = 0;
+    Steer_PID.LastError     = 0;
+    Steer_PID.SetPoint      = 0;
+    Steer_PID.IntegralError = 0;
 }
+
+#define STEER_PID_END_OPT 20
+// End of pid how to deal with the output?
+// Make it ok for the pwm
+#define STEER_PID_ERR 5
+// less than this will be considered no force
+
+/**
+ * @brief PID operation
+ * 
+ */
+void Steer_PID_Operate() {
+    u32 Error = 0;
+    u32 Output = 0;
+    if (SteerDirection ^ SteerDestinationDir) {
+        Error = SteerPosition + SteerDestinationPos;
+    } else {
+        Error = (SteerPosition > SteerDestinationPos)
+                    ? (SteerPosition - SteerDestinationPos)
+                    : (SteerDestinationPos - SteerPosition);
+    }
+    Steer_PID.IntegralError = Steer_PID.IntegralError / 5 * 4 + Error;
+
+    Output = Steer_PID.Kd * (s32)Error +
+             Steer_PID.Kp * (Error - Steer_PID.LastError) +
+             Steer_PID.Ki * (Steer_PID.IntegralError);
+    Steer_PID.LastError = Error;
+    Output /= STEER_PID_END_OPT;
+    if (Output > 100) Output = 100;
+    if (Output < STEER_PID_ERR) Output = 0;
+    Steer_PWM_SetDutyCycle((u8)Output);
+}
+
+void Steer_PWM_SetDutyCycle(u8 DutyCycle) {
+    SteerDutyCycle = DutyCycle;
+}
+

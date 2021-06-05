@@ -1,17 +1,50 @@
+/**
+ * @file motor.c
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief Motor Module
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "motor.h"
 #include "stm32f10x.h"
 #include "remote.h"
 
+
+
+u8 static volatile MotorCounter = 0;
+u8 static volatile MotorDirection = 0;
+u8 static volatile MotorDutyCycle = 0;
+u8 static volatile MotorChangingDir = 0;
+// 0 for A and 1 for B
+
+#define MOTOR_CHANGING_WAIT 100
+// wait for about 1 second
+
+/**
+ * @brief Operate the accelerate of motor depending on the command
+ * Operation time on a 10ms basis.
+ * @param data 
+ */
 void Motor_OnCommandLine(Remote_DataStructure *data) {
-    /*
-    **
-    **
-    **
-    **              TODO: Completion
-    **
-    **
-    **
-    */
+    if (MotorChangingDir--) return;
+    s16 speed = data->Acceleration;
+                // if Currently changing direction,
+                // to prevent the motor from being damaged,
+                // you have to wait for some time.
+                // Actually how long it should be is unknown.
+    if (((speed > 0) ? 1 : 0) ^ MotorDirection) {
+        MotorChangingDir = MOTOR_CHANGING_WAIT;
+        Motor_PWM_SetDutyCycle(0);
+        return;
+    }
+    MotorDirection = ((speed > 0) ? 1 : 0);
+    speed /= MotorDirection ? 300 : -300;
+    // No more. It was unwise to transport so many digits
+
+    Motor_PWM_SetDutyCycle((u8)speed);
 }
 
 
@@ -64,10 +97,6 @@ void Motor_TIM_IRQ_Init() {
     NVIC_Init(&NVIC_InitStructure);
 }
 
-u8 static volatile MotorCounter = 0;
-u8 static volatile MotorDirection = 0;
-u8 static volatile MotorDutyCycle = 0;
-// 0 for A and 1 for B
 
 void Motor_TIM_IRQHandler() {
     if (TIM_GetITStatus(MOTOR_TIM, TIM_IT_Update) != RESET) {
@@ -96,4 +125,8 @@ void Motor_TIM_IRQHandler() {
         MotorCounter %= 100;
         TIM_ClearITPendingBit(MOTOR_TIM, TIM_IT_Update);
     }
+}
+
+void Motor_PWM_SetDutyCycle(u8 DutyCycle) {
+    MotorDutyCycle = DutyCycle;
 }

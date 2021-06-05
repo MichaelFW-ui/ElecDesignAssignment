@@ -1,3 +1,13 @@
+/**
+ * @file motor.h
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __MOTOR_H
 #define __MOTOR_H
 

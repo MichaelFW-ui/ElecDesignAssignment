@@ -1,3 +1,13 @@
+/**
+ * @file steer.h
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __STEER_H
 #define __STEER_H
 
@@ -56,6 +66,10 @@ void Steer_TIM_IRQ_Init(void);
 void Steer_PWM_SetDutyCycle(u8 DutyCycle);
 
 void Steer_ADC_NVIC_Init(void);
+
+void Steer_PID_Operate(void);
+
+void Steer_GetPosition(void);
 
 
 /*                   PID TRY                                                  */

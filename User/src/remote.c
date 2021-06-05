@@ -1,6 +1,19 @@
+/**
+ * @file remote.c
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief Remote Control Module NRF24L01
+* Params are fixed.
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "remote.h"
 #include "stdio.h"
 #include "delay.h"
+#include "steer.h"
+#include "motor.h"
 
 // Init the SPI part, not including the nrf chip.
 void Remote_SPI_Init() {
@@ -271,6 +284,8 @@ void NRF_IRQHandler() {
         **      How to use the command lines?
         **
         */
+        Steer_OnCommandLine(&RxData);
+        Motor_OnCommandLine(&RxData);
         EXTI_ClearITPendingBit(NRF_IRQ_EXTI_LINE);
     }
 }

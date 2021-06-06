@@ -96,6 +96,7 @@ void Debug_CommandHandler() {
        Debug_USART_BufferClear();
 }
 
+
 int fputc(int ch, FILE *f) {
     Debug_USART_SendByte(ch);
     return ch;

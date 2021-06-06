@@ -78,9 +78,9 @@ typedef struct {
     double Kp;
     double Ki;
     double Kd;
-    u32 SetPoint;
-    u32 LastError;
-    u32 IntegralError;
+    s32 SetPoint;
+    s32 LastError;
+    s32 IntegralError;
 } Steer_PID_TypeDef;
 
 #endif

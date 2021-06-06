@@ -10,6 +10,7 @@
  */
 #include "motor.h"
 #include "stm32f10x.h"
+#include "stdio.h"
 #include "remote.h"
 
 
@@ -23,9 +24,11 @@ u8 static volatile MotorChangingDir = 0;
 #define MOTOR_CHANGING_WAIT 100
 // wait for about 1 second
 
+#define __DEBUG_PWM
+
 /**
  * @brief Operate the accelerate of motor depending on the command
- * Operation time on a 10ms basis.
+ *  Operation time on a 10ms basis.
  * @param data 
  */
 void Motor_OnCommandLine(Remote_DataStructure *data) {
@@ -44,7 +47,15 @@ void Motor_OnCommandLine(Remote_DataStructure *data) {
     speed /= MotorDirection ? 300 : -300;
     // No more. It was unwise to transport so many digits
 
+#ifdef __DEBUG_PWM
+
+    printf("Motor %d %d\r\n", MotorDirection, speed);
+
+#else
+
     Motor_PWM_SetDutyCycle((u8)speed);
+
+#endif // __DEBUG_PWM
 }
 
 

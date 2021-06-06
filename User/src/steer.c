@@ -10,23 +10,27 @@
  * 
  */
 #include "steer.h"
-
+#include "stdio.h"
 #include "stm32f10x.h"
 
 u16 Steer_ADC_Converted = 0;
 
-u8 static volatile SteerCounter   = 0;
-u16 static volatile SteerPosition = 0;
-u16 static volatile SteerDestinationPos = 0;
+// u16 static volatile SteerPosition = 0;
+// u16 static volatile SteerDestinationPos = 0;
 
-u8 static volatile SteerDirection = 0;
-u8 static volatile SteerDestinationDir = 0;
-// 0 for positive
-u8 static volatile SteerDutyCycle = 0;
-u8 static volatile SteerAccelDirection = 0;
+// u8 static volatile SteerDirection = 0;
+// u8 static volatile SteerDestinationDir = 0;
+// // 0 for positive
+// u8 static volatile SteerAccelDirection = 0;
 // 0 for A PWM, 1 for B PWM
 
 
+u8 static volatile SteerCounter   = 0;
+u8 static volatile SteerDutyCycle = 0;
+
+static vs32 SteerPosition       = 0;
+static vs32 SteerDestinationPos = 0;
+static vs8 SteerAccelDirection  = 0;
 
 Steer_PID_TypeDef Steer_PID;
 
@@ -39,34 +43,18 @@ Steer_PID_TypeDef Steer_PID;
  */
 void Steer_GetPosition(void) {
     u16 tmp = Steer_ADC_Converted;
-    if (tmp > STEER_MID_RES) {
-        SteerPosition = tmp - STEER_MID_RES;
-        SteerDirection = 0;
-    } else {
-        SteerPosition = STEER_MID_RES - tmp;
-        SteerDirection = 1;
-    }
+    SteerPosition = (tmp - STEER_MID_RES) << 2;
 }
 
+/**
+ * @brief Operate the Steer when command comes
+ * 
+ * @param data Received command data
+ */
 void Steer_OnCommandLine(Remote_DataStructure *data) {
     Steer_GetPosition();
-    if (data->Direction > 0) {
-        SteerDestinationPos = data->Direction;
-        SteerDestinationDir = 0;
-    } else {
-        SteerDestinationPos = -data->Direction;
-        SteerDestinationDir = 1;
-    }
+    SteerDestinationPos = data->Direction;
     Steer_PID_Operate();
-    /*
-    **
-    **
-    **
-    **      TODO:Completion
-    **
-    **
-    **
-    */
 }
 
 /**
@@ -106,9 +94,9 @@ void Steer_TIM_IRQ_Init() {
 // direction, careful
 /**
  * @brief PWM Control
- *       PWM - 0 : A output
- *       0 - PWM : B output
- *       0 -     : Stop
+ *  PWM - 0 : A output
+ *  0 - PWM : B output
+ *  0 -     : Stop
  * @attention NonPID Control Flow
  */
 void Steer_TIM_IRQHandler() {
@@ -233,34 +221,51 @@ void Steer_PID_Init() {
 // Make it ok for the pwm
 #define STEER_PID_ERR 5
 // less than this will be considered no force
+#define STEER_PID_INTEGRAL_OVERFLOW 300
+// Prevent integral overflow
+
+#define __DEBUG_PWM
 
 /**
- * @brief PID operation
+ * @brief PID Control Flow
  * 
  */
 void Steer_PID_Operate() {
-    u32 Error = 0;
-    u32 Output = 0;
-    if (SteerDirection ^ SteerDestinationDir) {
-        Error = SteerPosition + SteerDestinationPos;
-    } else {
-        Error = (SteerPosition > SteerDestinationPos)
-                    ? (SteerPosition - SteerDestinationPos)
-                    : (SteerDestinationPos - SteerPosition);
-    }
-    Steer_PID.IntegralError = Steer_PID.IntegralError / 5 * 4 + Error;
+    s32 Error  = 0;
+    s32 Output = 0;
 
-    Output = Steer_PID.Kd * (s32)Error +
+    Error = SteerPosition - SteerDestinationPos;
+
+    SteerAccelDirection = ((Error > 0) ? 1 : 0);
+    if (Steer_PID.IntegralError + Error < STEER_PID_INTEGRAL_OVERFLOW &&
+        Steer_PID.IntegralError + Error > -STEER_PID_INTEGRAL_OVERFLOW)
+        Steer_PID.IntegralError += Error;
+    // Integral overflow prevention
+    // modify the parameter later
+    Output = Steer_PID.Kd * Error +
              Steer_PID.Kp * (Error - Steer_PID.LastError) +
              Steer_PID.Ki * (Steer_PID.IntegralError);
     Steer_PID.LastError = Error;
     Output /= STEER_PID_END_OPT;
+    if (Output < 0) Output = ~Output + 1;        // Equals -Output
     if (Output > 100) Output = 100;
     if (Output < STEER_PID_ERR) Output = 0;
+#ifdef __DEBUG_PWM
+
+    printf("Steer %d %d\r\n", SteerAccelDirection, Output);
+
+#else
+
     Steer_PWM_SetDutyCycle((u8)Output);
+
+#endif // __DEBUG_PWM
 }
 
+/**
+ * @brief Set PWM DutyCycle
+ * 
+ * @param DutyCycle 
+ */
 void Steer_PWM_SetDutyCycle(u8 DutyCycle) {
     SteerDutyCycle = DutyCycle;
 }
-

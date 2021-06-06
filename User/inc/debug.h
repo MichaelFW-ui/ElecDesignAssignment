@@ -1,3 +1,13 @@
+/**
+ * @file debug.h
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief 
+ * @version 0.1
+ * @date 2021-06-05
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #ifndef __DEBUG_H
 #define __DEBUG_H
 
@@ -24,6 +34,7 @@
 #define DEBUG_USART_GPIO_APBxClkCmd RCC_APB2PeriphClockCmd
 #define DEBUG_USART_TX_GPIO_PORT    GPIOA
 #define DEBUG_USART_TX_GPIO_PIN     GPIO_Pin_9
+
 #define DEBUG_USART_RX_GPIO_PORT    GPIOA
 #define DEBUG_USART_RX_GPIO_PIN     GPIO_Pin_10
 #define DEBUG_USART_IRQ             USART1_IRQn

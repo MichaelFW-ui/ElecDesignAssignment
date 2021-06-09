@@ -1,3 +1,13 @@
+/**
+ * @file debug.c
+ * @author Michael Francis Williams (GitHub:Michael-ui)
+ * @brief Debug function based on SPL
+ * @version 0.1
+ * @date 2021-06-08
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include "debug.h"
 #include "stdio.h"
 

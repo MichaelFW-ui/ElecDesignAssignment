@@ -176,7 +176,7 @@ u8 Remote_SPI_SendByte(u8 byte);
 
 u8 Remote_SPI_ReceiveByte(void);
 
-u8 Remote_SPI_Callback(u16 ErrorCode);
+u8 __INLINE Remote_SPI_Callback(u16 ErrorCode);
 
-u8 Remote_NRF_WriteReg(u8 reg, u8 Reset, u8 Set);
+u8 __INLINE Remote_NRF_WriteReg(u8 reg, u8 Reset, u8 Set);
 #endif

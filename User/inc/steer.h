@@ -71,6 +71,8 @@ void Steer_PID_Operate(void);
 
 void Steer_GetPosition(void);
 
+void Steer_PlainOperate(void);
+
 
 /*                   PID TRY                                                  */
 

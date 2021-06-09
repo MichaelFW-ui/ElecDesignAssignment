@@ -54,7 +54,26 @@ void Steer_GetPosition(void) {
 void Steer_OnCommandLine(Remote_DataStructure *data) {
     Steer_GetPosition();
     SteerDestinationPos = data->Direction;
-    Steer_PID_Operate();
+    // Steer_PID_Operate();
+    Steer_PlainOperate();
+}
+
+/**
+ * @brief NonPID operation
+ * According to the report, it is not okey to treat the steering motor as 
+ * an engine. So PID is Not Okay.
+ * 
+ * @param None
+ * @retval None
+ */
+void Steer_PlainOperate() {
+    SteerAccelDirection = ((SteerDestinationPos > 0) ? 1 : 0);
+
+    u16 output = (SteerAccelDirection > 0) ? SteerAccelDirection / 300
+                                           : -SteerAccelDirection / 300;
+    if (output > 100) output = 100;
+    if (output < 10) output = 0;
+    Steer_PWM_SetDutyCycle(output);
 }
 
 /**

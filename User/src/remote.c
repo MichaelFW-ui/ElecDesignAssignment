@@ -246,11 +246,13 @@ void NRF_IRQHandler() {
         if (rx & (1 << 6)) {
             // ACknowledgement
             REMOTE_SPI_CS_LOW();
-            tx      = 0xa8;        // W_ACK_PAYLOAD,  PPP = 000b
-            rx      = Remote_SPI_SendByte(tx);
+
+            tx = 0xa8;        // W_ACK_PAYLOAD,  PPP = 000b
+            rx = Remote_SPI_SendByte(tx);
+
             u8 *ptr = (u8 *)&RxACKData;
             for (int i = 0; i < REMOTE_ACKDATA_SIZE; ++i) {
-                tx = *((u8 *)&RxACKData);
+                tx = *((u8 *)&RxACKData + i);
                 Remote_SPI_SendByte(tx);
             }
             REMOTE_SPI_CS_HIGH();
@@ -276,16 +278,16 @@ void NRF_IRQHandler() {
             rx = Remote_SPI_SendByte(tx);
             REMOTE_SPI_CS_HIGH();
             REMOTE_DELAY();
+            /*
+            **
+            **
+            **      TODO:Completion
+            **      How to use the command lines?
+            **
+            */
+            Steer_OnCommandLine(&RxData);
+            Motor_OnCommandLine(&RxData);
         }
-        /*
-        **
-        **
-        **      TODO:Completion
-        **      How to use the command lines?
-        **
-        */
-        Steer_OnCommandLine(&RxData);
-        Motor_OnCommandLine(&RxData);
         EXTI_ClearITPendingBit(NRF_IRQ_EXTI_LINE);
     }
 }

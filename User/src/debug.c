@@ -10,6 +10,9 @@
  */
 #include "debug.h"
 #include "stdio.h"
+#include "remote.h"
+#include "motor.h"
+#include "steer.h"
 
 void Debug_USART_Init() {
     // NVIC configuration
@@ -78,7 +81,6 @@ void DEBUG_USART_IRQHandler(void) {
         USART_ClearITPendingBit(DEBUG_USARTx, USART_IT_RXNE);
         Debug_USART_BufferPush(tmp = USART_ReceiveData(DEBUG_USARTx));
         if (tmp == '\n') Debug_CommandHandler();
-        // tmp = USART_ReceiveData(DEBUG_USARTx);
     }
     // https://blog.csdn.net/origin333/article/details/49992383
     // 检查 ORE 标志
@@ -95,17 +97,41 @@ void Debug_CommandHandler() {
     /*
     **              TODO: Completion
     */
-   u8 *ptrBuffer = Debug_USART_CommandBuffer;
-   u16 cur = Debug_USART_BufferCur;
+    u8 *ptrBuffer = Debug_USART_CommandBuffer;
+    u16 cur       = Debug_USART_BufferCur;
     /*        Modify this for your commands                                   */
-   for (int i = 0; i < cur; ++i) {
-       printf("%c", *(ptrBuffer + i));
-   }
+#define SHOW_CMD 0
+    if (SHOW_CMD) {
+        for (int i = 0; i < cur; ++i) {
+            printf("0x%X ", *(ptrBuffer + i));
+        }
+    }
+    printf("\r\n");
+    if (ptrBuffer[0] == 'E') {
+        u8 tx, rx;
+        tx = NOP;
+        REMOTE_SPI_CS_LOW();
+        rx = Remote_SPI_SendByte(tx);
+        REMOTE_SPI_CS_HIGH();
+        printf("\r\nStatus : 0x%X", rx);
+        REMOTE_DELAY();
+    } else if (ptrBuffer[0] == 'M') {
+        u8 data = ptrBuffer[1] - '0';
+        printf("\r\nCommand:Set Motor at %d0", data * 10);
+        Motor_PWM_SetDutyCycle(10 * data);
+    } else if (ptrBuffer[0] == 'S') {
+        u8 data = ptrBuffer[1] - '0';
+        printf("\r\nCommand:Set Steer at %d0", data * 10);
+        Steer_PWM_SetDutyCycle(10 * data);
+    } else if (ptrBuffer[0] == 'W') {
+        printf("\r\nCommand:Module On going, standing by.");
+    }
+    printf("\r\n");
+
     /*       End of modification                                              */
 
-       Debug_USART_BufferClear();
+    Debug_USART_BufferClear();
 }
-
 
 int fputc(int ch, FILE *f) {
     Debug_USART_SendByte(ch);

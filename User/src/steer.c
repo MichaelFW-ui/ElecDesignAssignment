@@ -22,7 +22,6 @@ u16 Steer_ADC_Converted = 0;
 // u8 static volatile SteerDestinationDir = 0;
 // // 0 for positive
 // u8 static volatile SteerAccelDirection = 0;
-// 0 for A PWM, 1 for B PWM
 
 
 u8 static volatile SteerCounter   = 0;
@@ -31,6 +30,7 @@ u8 static volatile SteerDutyCycle = 0;
 static vs32 SteerPosition       = 0;
 static vs32 SteerDestinationPos = 0;
 static vs8 SteerAccelDirection  = 0;
+// 0 for A PWM, 1 for B PWM
 
 Steer_PID_TypeDef Steer_PID;
 

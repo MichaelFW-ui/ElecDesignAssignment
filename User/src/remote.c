@@ -145,6 +145,11 @@ void Remote_NRF_Init() {
     u8 tx;
     u8 rx;
 
+    printf("Ready to config nrf in 5 seconds\r\n");
+    delay_s(5000);
+    printf("Begin configuration\r\n");
+
+    
     REMOTE_SPI_CS_LOW();
     tx = READ_RG | CONFIG;         // read CONFIG
     rx = Remote_SPI_SendByte(tx);
@@ -244,6 +249,9 @@ void NRF_IRQHandler() {
         REMOTE_SPI_CS_HIGH();
         REMOTE_DELAY();
         if (rx & (1 << 6)) {
+
+            printf("Rx");
+
             // ACknowledgement
             REMOTE_SPI_CS_LOW();
 
@@ -266,6 +274,7 @@ void NRF_IRQHandler() {
             ptr = (u8 *)&RxData;
             for (int i = 0; i < REMOTE_DATA_SIZE; ++i) {
                 *(ptr + i) = Remote_SPI_SendByte(tx);
+                printf("%d\r\n", *(ptr + i));
             }
             REMOTE_SPI_CS_HIGH();
             REMOTE_DELAY();

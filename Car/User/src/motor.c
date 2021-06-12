@@ -100,7 +100,7 @@ void Motor_Init() {
     GPIO_Init(MOTOR_PWM_EN_PORT, &GPIO_InitStructure);
 }
 
-// 100Hz, because APB1 is 36MHz, but APB1 for 
+// 100Hz
 // TIM is doubled.
 void Motor_TIM_Init() {
    TIM_TimeBaseInitTypeDef  TIM_TimeBaseInitStructure;
@@ -127,14 +127,6 @@ void Motor_TIM_IRQ_Init() {
 
 void MOTOR_TIM_IRQHandler() {
     if (TIM_GetITStatus(MOTOR_TIM, TIM_IT_Update) != RESET) {
-        /*
-        **
-        **
-        **
-        **      TODO: Completion
-        **
-        **
-        */
         if (MotorCounter++ < MotorDutyCycle) {
             GPIO_ResetBits(MOTOR_PWM_EN_PORT, MOTOR_PWM_EN_PIN);
             if (MotorDirection) {

@@ -41,8 +41,6 @@ int main(void) {
         Nixie_SetNumber(RxData.Status % 10000);
         Steer_OnCommandLine(&RxData);
         Motor_OnCommandLine(&RxData);
-        // printf("input %d %d\r\n", RxData.Acceleration, RxData.Direction);
-        // printf("%d\r\n", Steer_ADC_Converted);
         Steer_GetPosition();
         delay_ms(20);
     }

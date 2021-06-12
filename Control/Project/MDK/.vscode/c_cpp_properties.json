@@ -3,16 +3,16 @@
         {
             "name": "Target 1",
             "includePath": [
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\Libraries\\STM32F10x_StdPeriph_Driver\\inc",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\User",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\Libraries\\CMSIS\\CM3\\CoreSupport",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\Libraries\\CMSIS\\CM3\\DeviceSupport\\ST\\STM32F10x",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\User\\inc",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\Libraries\\STM32F10x_StdPeriph_Driver\\inc",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\User",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\Libraries\\CMSIS\\CM3\\CoreSupport",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\Libraries\\CMSIS\\CM3\\DeviceSupport\\ST\\STM32F10x",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\User\\inc",
                 "D:\\Keil_v5\\ARM\\ARMCC\\include",
                 "D:\\Keil_v5\\ARM\\ARMCC\\include\\rw",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\Libraries\\CMSIS\\CM3\\DeviceSupport\\ST\\STM32F10x\\startup\\arm",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\Libraries\\STM32F10x_StdPeriph_Driver\\src",
-                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\ABACK\\User\\src"
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\Libraries\\CMSIS\\CM3\\DeviceSupport\\ST\\STM32F10x\\startup\\arm",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\Libraries\\STM32F10x_StdPeriph_Driver\\src",
+                "d:\\ProgrammingPractices\\EmbeddedSystem\\GrandExp02\\Final\\Control\\User\\src"
             ],
             "defines": [
                 "USE_STDPERIPH_DRIVER",

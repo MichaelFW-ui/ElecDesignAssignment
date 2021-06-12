@@ -100,7 +100,7 @@ void Debug_CommandHandler() {
     */
     u8 *ptrBuffer = Debug_USART_CommandBuffer;
     u16 cur       = Debug_USART_BufferCur;
-    /*        Modify this for your commands                                   */
+    // Use this if you want to see your commands at once.
 #define SHOW_CMD 0
     if (SHOW_CMD) {
         for (int i = 0; i < cur; ++i) {
@@ -123,7 +123,6 @@ void Debug_CommandHandler() {
     }
     printf("\r\n");
 
-    /*       End of modification                                              */
 
     Debug_USART_BufferClear();
 }

@@ -16,15 +16,6 @@
 
 u16 Steer_ADC_Converted = 0;
 
-// u16 static volatile SteerPosition = 0;
-// u16 static volatile SteerDestinationPos = 0;
-
-// u8 static volatile SteerDirection = 0;
-// u8 static volatile SteerDestinationDir = 0;
-// // 0 for positive
-// u8 static volatile SteerAccelDirection = 0;
-
-
 u8 static volatile SteerCounter   = 0;
 u8 static volatile SteerDutyCycle = 0;
 
@@ -35,9 +26,6 @@ static vs8 SteerAccelDirection  = 0;
 
 Steer_PID_TypeDef Steer_PID;
 
-#define STEER_MID_RES 2047
-// Mid point resistence
-
 #define bias 0
 #define LEFT_MARGIN 1700
 #define RIGHT_MARGIN 2600
@@ -47,16 +35,10 @@ Steer_PID_TypeDef Steer_PID;
  */
 void Steer_GetPosition(void) {
     u16 tmp = Steer_ADC_Converted;
-    // 1566 2568
-    
-    // MARK:CCC
-    // FIXME: make the position proper, notice the position?
-
     static u8 cnt = 0;
-    // if (!(cnt = (cnt + 1) % 10))
     SteerPosition = (tmp - ((RIGHT_MARGIN + LEFT_MARGIN) >> 1)) * 30000 /
                     ((RIGHT_MARGIN + LEFT_MARGIN + bias) >> 1);
-    SteerPosition += 2000;
+    SteerPosition += 2000;              //bias
     printf("Pos %d\r\n", SteerPosition);
 }
 
@@ -73,9 +55,6 @@ void Steer_OnCommandLine(Remote_DataStructure *data) {
     SteerDestinationPos = -SteerDestinationPos;
     // printf("SteerDestination %d\r\n", SteerDestinationPos);
     // printf("SteerPosition %d\r\n", SteerPosition);
-    // Easy to find the person too excited to code.
-
-        // MARK:AAA
     // printf("%d %d\r\n", SteerAccelDirection, SteerDutyCycle);
     // printf("%d \r\n", Steer_PID.LastError);
 
@@ -247,6 +226,7 @@ void Steer_ADC_IRQHandler() {
 
 void Steer_PID_Init() {
     // Initialize
+    // The constants are taken through tests on it.
     Steer_PID.Kd            = 1;
     Steer_PID.Ki            = 0;
     Steer_PID.Kp            = 0.3;
@@ -286,18 +266,14 @@ void Steer_PID_Operate() {
              Steer_PID.Ki * (Steer_PID.IntegralError);
     Steer_PID.LastError = Error;
 
-
     SteerAccelDirection = ((Output > 0) ? 1 : 0);
     Output /= STEER_PID_END_OPT;
     if (Output < 0) Output = ~Output + 1;        // Equals -Output
     if (Output > 100) Output = 100;
     if (Output < STEER_PID_ERR) Output = 0;
 
-
-    // MARK:BBB
     Output /= 2;
-    static u16 cnt = 0;
-    // if (!(cnt++)) printf("output:%d\r\n, error:%d\r\n", Output, Error);
+    // static u16 cnt = 0;
 
 #ifdef __DEBUG_PWM
 
